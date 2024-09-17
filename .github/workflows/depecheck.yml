@@ -1,0 +1,31 @@
+#from https://github.com/dependency-check/Dependency-Check_Action
+name: Dependency check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  depchecktest:
+    runs-on: ubuntu-22.04
+    name: depecheck_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build project with Maven
+        run: mvn clean install --file tool/pom.xml
+      - name: Depcheck
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
+        with:
+          project: 'test'
+          path: '.'
+          format: 'HTML'
+          out: 'reports' # this is the default, no need to specify unless you wish to override it
+          args: >
+            #--failOnCVSS 9
+            --enableRetired
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report
+           path: ${{github.workspace}}/reports
