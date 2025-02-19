@@ -52,6 +52,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
+       cd tool |
        mvn clean package -DskipTests=true
        
     - name: Perform CodeQL Analysis
