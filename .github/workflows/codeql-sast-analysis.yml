@@ -51,9 +51,9 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
-    - run: |
-       cd tool |
-       mvn clean package -DskipTests=true
+    - name: Package with Maven
+      working-directory: tool/
+      run: mvn clean package -DskipTests=true
        
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
